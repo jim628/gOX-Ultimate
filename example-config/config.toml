@@ -1,0 +1,9 @@
+# This is an example configuration
+
+[board]
+pathS = "../example-config/boardSimple.txt"
+pathG = "../example-config/boardGrand.txt"
+offset = {x = 2, y = 1} # place characters offseted by 2 and 1 start at 2:3 (2nd row 3rd column)
+
+[colours]
+winner = {X = "red", O = "blue"}
