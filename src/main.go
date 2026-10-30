@@ -34,24 +34,45 @@ func main() {
 		return
 	}
 	f := bufio.NewScanner(file)
-	activeBoard, err := loadBoardEmpty(f)
+	activeBoard, err := loadBoard(f, "", "Xwin")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// DBG PRINT RM later
+
 	fmt.Print("\x1b[2J\x1b[H") // clear screen, cursor to 1;1
 	fmt.Print(activeBoard)
 	time.Sleep(time.Second)
 
-	activeBoardXwin, err := loadBoardXwin(f)
+	activeBoardXwin, err := loadBoard(f, "Xwin", "Owin")
 	fmt.Print("\x1b[H") // back to top-left
 	fmt.Print(activeBoardXwin)
 	time.Sleep(time.Second)
 
-	activeBoardOwin, err := loadBoardOwin(f)
+	activeBoardOwin, err := loadBoard(f, "Owin", "BIG")
 	fmt.Print("\x1b[H") // back to top-left
 	fmt.Print(activeBoardOwin)
+	time.Sleep(time.Second)
+
+	activeBoardBig, err := loadBoard(f, "BIG", "end")
+	fmt.Print("\x1b[H") // back to top-left
+	fmt.Print(activeBoardBig)
+	time.Sleep(time.Second)
+
+	var inter Interface
+	var state State
+	state.Init()
+	inter.Init(
+		activeBoard,
+		activeBoardOwin,
+		activeBoardXwin,
+		activeBoardBig,
+	)
+
+	inter.renderBoard(state)
+	fmt.Print("\x1b[H") // back to top-left
+	fmt.Print(inter.RenderedBoard)
 
 	fmt.Println() // move to a new line when done
 }

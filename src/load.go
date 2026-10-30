@@ -42,11 +42,11 @@ func loadConfig(path string) (*Config, error) {
 	return &cfg, nil
 }
 
-func loadBoardEmpty(f *bufio.Scanner) (string, error) {
+func loadBoard(f *bufio.Scanner, start string, end string) (string, error) {
 	var sb strings.Builder
 	for f.Scan() {
 		ln := f.Text()
-		if strings.Contains(ln, "Xwin") {
+		if strings.Contains(ln, end) {
 			return sb.String(), nil
 		}
 		ln = strings.Replace(ln, ";", "", -1)
@@ -54,36 +54,5 @@ func loadBoardEmpty(f *bufio.Scanner) (string, error) {
 		sb.WriteByte('\n')
 	}
 
-	return sb.String(), fmt.Errorf("couldn't parse empty board")
-}
-
-func loadBoardXwin(f *bufio.Scanner) (string, error) {
-	var sb strings.Builder
-
-	for f.Scan() {
-		ln := f.Text()
-		if strings.Contains(ln, "Owin") {
-			return sb.String(), nil
-		}
-		ln = strings.Replace(ln, ";", "", 1)
-		sb.WriteString(ln)
-		sb.WriteByte('\n')
-	}
-
-	return sb.String(), fmt.Errorf("couldn't parse Xwin")
-}
-
-func loadBoardOwin(f *bufio.Scanner) (string, error) {
-	var sb strings.Builder
-	for f.Scan() {
-		ln := f.Text()
-		if strings.Contains(ln, "end") {
-			return sb.String(), nil
-		}
-		ln = strings.Replace(ln, ";", "", 1)
-		sb.WriteString(ln)
-		sb.WriteByte('\n')
-	}
-
-	return sb.String(), fmt.Errorf("couldn't parse Owin")
+	return sb.String(), fmt.Errorf("couldn't parse %s", start)
 }
